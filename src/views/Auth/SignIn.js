@@ -46,22 +46,19 @@ function SignIn() {
 
 
     queryRef.forEach((doc) => {
-      console.log(doc.data());
-      let temp=doc.data();
-      localStorage.setItem("user",JSON.stringify(doc.data()));
-      localStorage.setItem("userId",JSON.stringify(doc.id));
+      // console.log(doc.data());
+      let temp = doc.data();
+      localStorage.setItem("user", JSON.stringify(doc.data()));
+      localStorage.setItem("userId", JSON.stringify(doc.id));
       isCorrect = true;
-      history.push("/");
+      history.push("/admin/dashboard");
     });
 
     if (isCorrect == false) {
-
       toast.error("Please enter correct credentials");
     }
 
   }
-
-
 
   return (
     <Flex position='relative' mb='40px'>
@@ -164,7 +161,10 @@ function SignIn() {
               mt='0px'>
               <Text color={textColor} fontWeight='medium'>
                 Don't have an account?
-                <Link to='/auth/signup' color={titleColor} as='span' ms='5px' fontWeight='bold'>
+                <Link onClick={() => {
+                  history.push("/auth/signup");
+
+                }} to='/auth/signup' color={titleColor} as='span' ms='5px' fontWeight='bold'>
                   Sign Up
                 </Link>
               </Text>

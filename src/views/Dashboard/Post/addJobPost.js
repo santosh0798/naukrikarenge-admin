@@ -23,7 +23,7 @@ import React from "react";
 import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
 
 
-import firestore from "../../../firebase/firebase";
+import firestore, { firestorage } from "../../../firebase/firebase";
 import { useHistory } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { useState } from "react";
@@ -38,13 +38,15 @@ function AddJobPost() {
 
   const [des, setDes] = useState("");
   const [exptype, setExpType] = useState("");
-  const [position, setPosition] = useState("");
+  // const [position, setPosition] = useState("");
   const [vacancy, setVacancy] = useState(1);
   const [qualification, setQualification] = useState("");
   const [otherDetails, setOtherDetails] = useState("");
   const [location, setLocation] = useState("");
   const [salary, setSalary] = useState("");
   const [title, setTitle] = useState("");
+  const [image, setImage] = useState("");
+  const [educationExperience, setEducationExperience] = useState("");
 
   const history = useHistory();
 
@@ -59,15 +61,17 @@ function AddJobPost() {
       .add({
         description: des,
         experienceType: exptype,
-        position: position,
+        // position: position,
         vacancy: vacancy,
         qualification: qualification,
+        educationExperience: educationExperience,
         otherDetails: otherDetails,
         location: location,
         salary: salary,
         title: title,
         company: JSON.parse(localStorage.getItem("userId")),
-        createdAt: new Date()
+        createdAt: new Date(),
+        img: image
       }).then((res) => {
 
         toast.success("Job Post added successfully!");
@@ -80,8 +84,6 @@ function AddJobPost() {
 
 
   }
-
-
 
 
   return (
@@ -109,21 +111,17 @@ function AddJobPost() {
           bg={bgColor}
           boxShadow='0 20px 27px 0 rgb(0 0 0 / 5%)'>
 
-
-
-
           <FormControl>
 
-
             <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
-              Title
+              Job Title
             </FormLabel>
             <Input
               fontSize='sm'
               ms='4px'
               borderRadius='15px'
               type='text'
-              placeholder='Enter Title'
+              placeholder='Enter Job Title'
               mb='24px'
               size='lg'
               value={title}
@@ -132,22 +130,6 @@ function AddJobPost() {
               }}
             />
 
-
-            <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
-              Job Description
-            </FormLabel>
-            <Textarea
-              fontSize='sm'
-              ms='4px'
-              borderRadius='15px'
-              placeholder='Enter Job Description'
-              mb='24px'
-              size='lg'
-              value={des}
-              onChange={(e) => {
-                setDes(e.target.value);
-              }}
-            />
             <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
               Experience Type
             </FormLabel>
@@ -163,31 +145,31 @@ function AddJobPost() {
                 setExpType(e.target.value);
               }}
             >
-              <option value='0-2 Year'>0-2 Year</option>
-              <option value='2-5 Year'>2-5 Year</option>
-              <option value='5+ Year'>5+ Year</option>
+              <option value='0-1 Year'>0-1 Year</option>
+              <option value='2-4 Year'>2-4 Year</option>
+              <option value='5-10+ Year'>5-10 Year</option>
+              <option value='10+ Year'>10+ Year</option>
             </Select>
+
+            {/*<FormLabel ms='4px' fontSize='sm' fontWeight='normal'>*/}
+            {/*  Opening Position*/}
+            {/*</FormLabel>*/}
+            {/*<Input*/}
+            {/*  fontSize='sm'*/}
+            {/*  ms='4px'*/}
+            {/*  borderRadius='15px'*/}
+            {/*  type='text'*/}
+            {/*  placeholder='Enter Opening Position'*/}
+            {/*  mb='24px'*/}
+            {/*  size='lg'*/}
+            {/*  value={position}*/}
+            {/*  onChange={(e) => {*/}
+            {/*    setPosition(e.target.value);*/}
+            {/*  }}*/}
+            {/*/>*/}
+
             <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
-              Opening Position
-            </FormLabel>
-            <Input
-              fontSize='sm'
-              ms='4px'
-              borderRadius='15px'
-              type='text'
-              placeholder='Enter Opening Position'
-              mb='24px'
-              size='lg'
-              value={position}
-              onChange={(e) => {
-                setPosition(e.target.value);
-              }}
-            />
-
-
-
-            <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
-              Location
+              Job Location
             </FormLabel>
             <Input
               fontSize='sm'
@@ -202,24 +184,6 @@ function AddJobPost() {
                 setLocation(e.target.value);
               }}
             />
-
-            <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
-              Salary
-            </FormLabel>
-            <Input
-              fontSize='sm'
-              ms='4px'
-              borderRadius='15px'
-              type='text'
-              placeholder='Enter Salary Of Job'
-              mb='24px'
-              size='lg'
-              value={salary}
-              onChange={(e) => {
-                setSalary(e.target.value);
-              }}
-            />
-
             <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
               Number of Vacancy
             </FormLabel>
@@ -235,10 +199,7 @@ function AddJobPost() {
               onChange={(e) => {
                 setVacancy(e.target.value);
               }}
-            >
-
-            </Input>
-
+            />
             <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
               Qualification Required
             </FormLabel>
@@ -260,8 +221,58 @@ function AddJobPost() {
               <option value='Under Graduate'>Under Graduate</option>
               <option value='Post Graduate'>Post Graduate</option>
             </Select>
+
             <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
-              Other Details
+              Salary Range
+            </FormLabel>
+            <Input
+              fontSize='sm'
+              ms='4px'
+              borderRadius='15px'
+              type='text'
+              placeholder='Enter Salary Of Job'
+              mb='24px'
+              size='lg'
+              value={salary}
+              onChange={(e) => {
+                setSalary(e.target.value);
+              }}
+            />
+
+            <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
+              Job Description
+            </FormLabel>
+            <Textarea
+              fontSize='sm'
+              ms='4px'
+              borderRadius='15px'
+              placeholder='Enter Job Description'
+              mb='24px'
+              size='lg'
+              value={des}
+              onChange={(e) => {
+                setDes(e.target.value);
+              }}
+            />
+
+            <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
+              Education + Experience
+            </FormLabel>
+            <Textarea
+              fontSize='sm'
+              ms='4px'
+              borderRadius='15px'
+              placeholder='Enter Job Description'
+              mb='24px'
+              size='lg'
+              value={educationExperience}
+              onChange={(e) => {
+                setEducationExperience(e.target.value);
+              }}
+            />
+
+            <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
+              Required Knowledge, Skills, and Abilities
             </FormLabel>
             <Textarea
               fontSize='sm'

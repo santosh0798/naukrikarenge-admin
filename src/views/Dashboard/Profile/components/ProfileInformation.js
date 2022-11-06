@@ -12,8 +12,8 @@ const ProfileInformation = ({
   description,
   name,
   mobile,
-  email,
   location,
+  website,
 }) => {
   // Chakra color mode
   const textColor = useColorModeValue("gray.700", "white");
@@ -32,7 +32,7 @@ const ProfileInformation = ({
           </Text>
           <Flex align='center' mb='18px'>
             <Text fontSize='md' color={textColor} fontWeight='bold' me='10px'>
-              Full Name:{" "}
+              Person Name:{" "}
             </Text>
             <Text fontSize='md' color='gray.500' fontWeight='400'>
               {name}
@@ -48,14 +48,6 @@ const ProfileInformation = ({
           </Flex>
           <Flex align='center' mb='18px'>
             <Text fontSize='md' color={textColor} fontWeight='bold' me='10px'>
-              Email:{" "}
-            </Text>
-            <Text fontSize='md' color='gray.500' fontWeight='400'>
-              {email}
-            </Text>
-          </Flex>
-          <Flex align='center' mb='18px'>
-            <Text fontSize='md' color={textColor} fontWeight='bold' me='10px'>
               Location:{" "}
             </Text>
             <Text fontSize='md' color='gray.500' fontWeight='400'>
@@ -64,35 +56,13 @@ const ProfileInformation = ({
           </Flex>
           <Flex align='center' mb='18px'>
             <Text fontSize='md' color={textColor} fontWeight='bold' me='10px'>
-              Social Media:{" "}
+              Website:{" "}
             </Text>
-            <Flex>
-              <Link
-                href='#'
-                color='teal.300'
-                fontSize='lg'
-                me='10px'
-                _hover={{ color: "teal.300" }}>
-                <Icon as={FaFacebook} />
-              </Link>
-              <Link
-                href='#'
-                color='teal.300'
-                fontSize='lg'
-                me='10px'
-                _hover={{ color: "teal.300" }}>
-                <Icon as={FaInstagram} />
-              </Link>
-              <Link
-                href='#'
-                color='teal.300'
-                fontSize='lg'
-                me='10px'
-                _hover={{ color: "teal.300" }}>
-                <Icon as={FaTwitter} />
-              </Link>
-            </Flex>
+            <Text fontSize='md' color='gray.500' fontWeight='400'>
+              {website}
+            </Text>
           </Flex>
+
         </Flex>
       </CardBody>
     </Card>

@@ -14,10 +14,10 @@ import {
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import DashboardTableRow from "components/Tables/DashboardTableRow";
+import DashboardTableRowCompany from "components/Tables/DashboardTableComapany";
 import React from "react";
-import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
 
-const Projects = ({ title, amount, captions, data }) => {
+const Projects = ({ title, captions, data,isc }) => {
   const textColor = useColorModeValue("gray.700", "white");
 
   return (
@@ -42,14 +42,24 @@ const Projects = ({ title, amount, captions, data }) => {
           </Tr>
         </Thead>
         <Tbody>
-          {data.map((row) => {
+          {isc?
+            data.map((row) => {
+            return (
+              <DashboardTableRowCompany
+                key={row?.name}
+                name={row?.company}
+                vacancy={row?.vacancy}
+              />
+            );
+          })
+          :data.map((row) => {
             return (
               <DashboardTableRow
-                key={row.name}
-                name={row.name}
-                experience={row.experience}
-                email={row.email}
-                phone={row.phone}
+                key={row?.name}
+                name={row?.name}
+                experience={row?.explevel}
+                email={row?.email}
+                phone={row?.mobile}
               />
             );
           })}

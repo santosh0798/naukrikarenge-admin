@@ -8,6 +8,7 @@ import {
     Tr,
     useColorModeValue,
 } from "@chakra-ui/react";
+
 // Custom components
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
@@ -78,6 +79,7 @@ const PostTitle = ({ title, captions, data }) => {
                             return (
                                 <PostTableRow
                                     key={`${row.email}-${row.company}`}
+                                    Title = {row.title}
                                     Description={row.description}
                                     ExperianceType={row.experienceType}
                                     Position={row.position}

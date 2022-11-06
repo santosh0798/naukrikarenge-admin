@@ -11,7 +11,7 @@ export default function PostTables() {
         <Flex direction='column' pt={{ base: "120px", md: "75px" }}>
             <PostTitle
                 title={"Job Post Table"}
-                captions={["Description", "Experiance Type", "Position", "Vacancy", "Qualification", "Other Details", 'Location', 'Salary']}
+                captions={["Job Title", "Experience Type", "Job Location", "Vacancy", "Qualification", 'Salary', 'Action']}
                 data={tablesTableData}
             />
         </Flex>

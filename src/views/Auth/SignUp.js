@@ -20,11 +20,12 @@ import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
 
 
 
-import firestore from "../../firebase/firebase";
-import { useHistory } from "react-router-dom";
+import firestore, { firestorage } from "../../firebase/firebase";
+import { useHistory, useLocation } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { useState } from "react";
-
+import { useEffect } from "react";
+import queryString from 'query-string'
 
 
 function SignUp() {
@@ -39,6 +40,10 @@ function SignUp() {
   const [company, setCompany] = useState("");
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [web, setWeb] = useState("");
+  const [image, setImage] = useState("");
+  const [des, setDes] = useState("");
 
   const history = useHistory();
 
@@ -56,7 +61,12 @@ function SignUp() {
         company: company,
         name: name,
         role: "company",
-        address: address
+        address: address,
+        img: image,
+        web: web,
+        mobile: mobile,
+        des: des,
+        createdAt: new Date()
       }).then((res) => {
 
         toast("Signup successfully");
@@ -69,6 +79,43 @@ function SignUp() {
 
 
   }
+
+
+  const { search } = useLocation();
+  const values = queryString.parse(search);
+
+  useEffect(() => {
+
+    console.log(values.editable)
+
+    async function getData() {
+      const firestoreRef = await firestore.collection('Company');
+
+      const queryRef = await firestoreRef
+        .doc(JSON.parse(localStorage.getItem("userId")))
+        .get();
+
+
+
+      setEmail(queryRef?.data().email);
+      setCompany(queryRef?.data().company);
+      setName(queryRef?.data().name);
+      setAddress(queryRef?.data().address);
+      setMobile(queryRef?.data().mobile);
+      setWeb(queryRef?.data().web);
+      setDes(queryRef?.data().des)
+
+    }
+
+
+
+
+    if (values.editable == "true") {
+      getData();
+
+    }
+
+  }, [search])
 
 
 
@@ -123,7 +170,7 @@ function SignUp() {
             fontWeight='bold'
             textAlign='center'
             mb='22px'>
-            Company Register
+            {values.editable == "true" ? "Edit Company Profile" : "Company Register"}
           </Text>
 
           <FormControl>
@@ -177,6 +224,38 @@ function SignUp() {
             />
 
             <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
+              Mobile
+            </FormLabel>
+            <Input
+              fontSize='sm'
+              ms='4px'
+              borderRadius='15px'
+              type='number'
+              placeholder='Your mobile number'
+              mb='24px'
+              size='lg'
+              value={mobile}
+              onChange={(e) => {
+                setMobile(e.target.value);
+              }}
+            />
+            <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
+              Website
+            </FormLabel>
+            <Input
+              fontSize='sm'
+              ms='4px'
+              borderRadius='15px'
+              type='text'
+              placeholder='Your Website'
+              mb='24px'
+              size='lg'
+              value={web}
+              onChange={(e) => {
+                setWeb(e.target.value);
+              }}
+            />
+            <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
               Password
             </FormLabel>
             <Input
@@ -208,26 +287,121 @@ function SignUp() {
                 setAddress(e.target.value);
               }}
             />
-            <Button
-              type='submit'
-              bg='teal.300'
-              fontSize='10px'
-              color='white'
-              fontWeight='bold'
-              w='100%'
-              h='45'
+            <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
+              Description
+            </FormLabel>
+            <Input
+              fontSize='sm'
+              ms='4px'
+              borderRadius='15px'
+              type='text'
+              placeholder='Your description'
               mb='24px'
-              _hover={{
-                bg: "teal.200",
+              size='lg'
+              aria-multiline
+              value={des}
+              onChange={(e) => {
+                setDes(e.target.value);
               }}
-              _active={{
-                bg: "teal.400",
-              }}
+            />
 
-              onClick={submitLogin}
-            >
-              SIGN UP
-            </Button>
+            <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
+              Company logo
+            </FormLabel>
+            <Input
+              fontSize='sm'
+              ms='4px'
+              borderRadius='15px'
+              type='file'
+              placeholder='Your mobile number'
+              mb='24px'
+              size='lg'
+              onChange={(e) => {
+                firestorage.ref(`/company/${e.target?.files[0].name}`)
+                  .put(e.target?.files[0])
+                  .then(({ ref }) => {
+                    ref.getDownloadURL().then((url) => {
+                      setImage(url);
+                      toast.success("Pic uploaded");
+                      console.log(url)
+
+                    });
+                  });
+              }}
+            />
+
+            {values.editable == "true" ?
+              <Button
+                type='submit'
+                bg='teal.300'
+                fontSize='10px'
+                color='white'
+                fontWeight='bold'
+                w='100%'
+                h='45'
+                mb='24px'
+                _hover={{
+                  bg: "teal.200",
+                }}
+                _active={{
+                  bg: "teal.400",
+                }}
+
+                onClick={() => {
+
+
+                  let x = image.toString() && image.toString() != "" ? {
+                    email: email,
+                    name: name,
+                    mobile: mobile,
+                    company: company,
+                    address: address,
+                    web: web ? web : "",
+                    des: des ? des : "",
+                    img: image.toString()
+
+                  } : {
+                    email: email,
+                    name: name,
+                    mobile: mobile,
+                    company: company,
+                    address: address,
+                    web: web ? web : "",
+                    des: des ? des : ""
+                  }
+                  console.log(x)
+
+
+                  firestore.collection("Company")
+                    .doc(JSON.parse(localStorage.getItem("userId")))
+                    .update(x);
+
+                  toast.success("Profile updates successfully")
+
+                }}
+              >
+                Update
+              </Button>
+              : <Button
+                type='submit'
+                bg='teal.300'
+                fontSize='10px'
+                color='white'
+                fontWeight='bold'
+                w='100%'
+                h='45'
+                mb='24px'
+                _hover={{
+                  bg: "teal.200",
+                }}
+                _active={{
+                  bg: "teal.400",
+                }}
+
+                onClick={submitLogin}
+              >
+                SIGN UP
+              </Button>}
           </FormControl>
           <Flex
             flexDirection='column'
@@ -238,6 +412,10 @@ function SignUp() {
             <Text color={textColor} fontWeight='medium'>
               Already have an account?
               <Link
+                onClick={() => {
+                  history.push("/auth/signin");
+
+                }}
                 color={titleColor}
                 as='span'
                 ms='5px'

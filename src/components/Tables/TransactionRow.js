@@ -1,6 +1,16 @@
 import { Box, Flex, Icon, Text, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
-
+import Moment from 'react-moment';
+import moment from 'moment';
+import {
+  FaArrowDown,
+  FaArrowUp,
+  FaBell,
+  FaCreditCard,
+  FaFilePdf,
+  FaHtml5,
+  FaShoppingCart
+} from "react-icons/fa";
 function TransactionRow(props) {
   const textColor = useColorModeValue("gray.700", "white");
   const { name, date, logo, price } = props;
@@ -25,7 +35,7 @@ function TransactionRow(props) {
           w="35px"
           h="35px"
         >
-          <Icon as={logo} />
+          <Icon as={FaArrowUp} />
         </Box>
         <Flex direction="column">
           <Text
@@ -40,7 +50,7 @@ function TransactionRow(props) {
             color="gray.400"
             fontWeight="semibold"
           >
-            {date}
+            <Moment date={date} element="span" />
           </Text>
         </Flex>
       </Flex>

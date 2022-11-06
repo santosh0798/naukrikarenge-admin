@@ -8,19 +8,26 @@ import TransactionRow from "components/Tables/TransactionRow";
 import React from "react";
 import { FaRegCalendarAlt, FaWallet } from "react-icons/fa";
 
+
+
 const Transactions = ({
   title,
   date,
   newestTransactions,
   olderTransactions,
+  item
 }) => {
   // Chakra color mode
   const textColor = useColorModeValue("gray.700", "white");
+
+
+
 
   return (
     <Card ms={{ lg: "24px" }}>
       <CardHeader mb='12px'>
         <Flex direction='column' w='100%'>
+
           <Flex
             direction={{ sm: "column", lg: "row" }}
             justify={{ sm: "center", lg: "space-between" }}
@@ -48,12 +55,12 @@ const Transactions = ({
       </CardHeader>
       <CardBody>
         <Flex direction='column' w='100%'>
-          {newestTransactions.map((row) => {
+          {item.map((row) => {
             return (
               <TransactionRow
                 name={row.name}
-                date={row.date}
-                price={row.price}
+                date={new Date(row.createdAt.toDate().toDateString())}
+                price={row.amount}
                 logo={row.logo}
               />
             );

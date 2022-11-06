@@ -31,47 +31,11 @@ import { SiDropbox } from "react-icons/si";
 
 export const companiesTableData = [
   {
-    name: "Gensions Technology Private Limited",
+    name: "Gensions Technology",
     experience: "ITI / Fitter"
   }
 ];
 export const dashboardTableData = [
-  {
-    name: "Chetan Patil",
-    experience: "Fresher",
-    email: "chetan@gmail.com",
-    phone: "9723935293"
-  },
-  {
-    name: "Chetan Patil",
-    experience: "Fresher",
-    email: "chetan@gmail.com",
-    phone: "9723935293"
-  },
-  {
-    name: "Chetan Patil",
-    experience: "Fresher",
-    email: "chetan@gmail.com",
-    phone: "9723935293"
-  },
-  {
-    name: "Chetan Patil",
-    experience: "Fresher",
-    email: "chetan@gmail.com",
-    phone: "9723935293"
-  },
-  {
-    name: "Chetan Patil",
-    experience: "Fresher",
-    email: "chetan@gmail.com",
-    phone: "9723935293"
-  },
-  {
-    name: "Chetan Patil",
-    experience: "Fresher",
-    email: "chetan@gmail.com",
-    phone: "9723935293"
-  },
   {
     name: "Chetan Patil",
     experience: "Fresher",

@@ -18,8 +18,42 @@ import Invoices from "./components/Invoices";
 import PaymentMethod from "./components/PaymentMethod";
 import PaymentStatistics from "./components/PaymentStatistics";
 import Transactions from "./components/Transactions";
+import firestore from "../../../firebase/firebase";
+import { useState, useEffect } from "react";
 
 function Billing() {
+
+
+  const [datas, setData] = useState([]);
+
+
+
+
+  useEffect(() => {
+
+    async function getData() {
+      setData([]);
+      const firestoreRef = await firestore.collection('transaction');
+
+      const queryRef = await firestoreRef
+        .get();
+
+
+
+      const userData = queryRef.forEach(function (childSnapshot) {
+        setData((companyData) => [...companyData, childSnapshot.data()]);
+      });
+    }
+
+
+    getData();
+
+  }, [])
+
+  console.log(datas)
+
+
+
   return (
     <Flex direction='column' pt={{ base: "120px", md: "75px" }}>
       <Grid templateColumns={{ sm: "1fr", lg: "2fr 1.2fr" }} templateRows='1fr'>
@@ -37,25 +71,55 @@ function Billing() {
               icon={<Icon h={"24px"} w={"24px"} color='white' as={FaWallet} />}
               title={"Total Earned"}
               description={"From Candidates"}
-              amount={2000}
+              amount={datas?.reduce((previousValue, currentValue) => {
+                return (
+                  previousValue + parseInt(currentValue.amount)
+                )
+              }, 0)}
             />
             <PaymentStatistics
               icon={<Icon h={"24px"} w={"24px"} color='white' as={FaWallet} />}
               title={"Total Earned"}
               description={"From Companies"}
-              amount={4550}
+              amount={datas?.reduce((previousValue, currentValue) => {
+                return (
+                  previousValue + parseInt(currentValue.amount)
+                )
+              }, 0)}
             />
             <PaymentStatistics
               icon={<Icon h={"24px"} w={"24px"} color='white' as={FaWallet} />}
               title={"This Month Earned"}
               description={"From Candidates"}
-              amount={2000}
+              amount={datas?.reduce((previousValue, currentValue) => {
+                if ((new Date(currentValue?.createdAt?.toDate().toDateString()).getMonth()) == (new Date().getMonth()) && (new Date(currentValue?.createdAt?.toDate().toDateString()).getFullYear()) == (new Date().getFullYear())) {
+                  return (
+                    previousValue + parseInt(currentValue.amount)
+                  )
+                }
+                else {
+                  return (
+                    previousValue
+                  )
+                }
+              }, 0)}
             />
             <PaymentStatistics
               icon={<Icon h={"24px"} w={"24px"} color='white' as={FaWallet} />}
               title={"This Month Earned"}
               description={"From Companies"}
-              amount={4550}
+              amount={datas?.reduce((previousValue, currentValue) => {
+                if ((new Date(currentValue?.createdAt?.toDate().toDateString()).getMonth()) == (new Date().getMonth()) && (new Date(currentValue?.createdAt?.toDate().toDateString()).getFullYear()) == (new Date().getFullYear())) {
+                  return (
+                    previousValue + parseInt(currentValue.amount)
+                  )
+                }
+                else {
+                  return (
+                    previousValue
+                  )
+                }
+              }, 0)}
             />
           </Grid>
 
@@ -63,6 +127,7 @@ function Billing() {
         <Transactions
           title={"Recent Transactions"}
           newestTransactions={newestTransactions}
+          item={datas}
         />
       </Grid>
 
