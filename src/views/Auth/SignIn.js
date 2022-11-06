@@ -19,8 +19,7 @@ import { useHistory } from "react-router-dom";
 import { toast } from 'react-toastify';
 
 // Assets
-
-
+import signInImage from "assets/img/admin_login.png";
 
 function SignIn() {
   // Chakra color mode
@@ -82,7 +81,7 @@ function SignIn() {
             p='48px'
             mt={{ md: "150px", lg: "80px" }}>
             <Heading color={titleColor} fontSize='32px' mb='10px'>
-              Welcome Admin
+              Welcome to Naukrikarenge.com
             </Heading>
             <Text
               mb='36px'
@@ -180,6 +179,7 @@ function SignIn() {
           right='0px'>
           <Box
             //Add Banner
+              bgImage={signInImage}
             w='100%'
             h='100%'
             bgSize='cover'
