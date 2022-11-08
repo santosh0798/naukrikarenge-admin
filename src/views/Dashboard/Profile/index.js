@@ -22,13 +22,7 @@ function Profile() {
     "linear-gradient(112.83deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0) 110.84%)"
   );
 
-
-
-
-
-
   const [datas, setData] = useState({});
-
 
 
 
@@ -40,9 +34,6 @@ function Profile() {
       const queryRef = await firestoreRef
         .doc(JSON.parse(localStorage.getItem("userId")))
         .get();
-
-
-
       setData(queryRef?.data());
     }
 

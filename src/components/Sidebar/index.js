@@ -3,8 +3,9 @@
 import {
   Box, useColorModeValue
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SidebarContent from "./SidebarContent";
+import firestore from "../../firebase/firebase";
 
 // FUNCTIONS
 
@@ -25,6 +26,29 @@ function Sidebar(props) {
     sidebarRadius = "16px";
     sidebarMargins = "16px 0px 16px 16px";
   }
+
+  const [datas, setData] = useState({});
+
+
+
+  useEffect(() => {
+
+    async function getData() {
+      const firestoreRef = await firestore.collection('Company');
+
+      const queryRef = await firestoreRef
+        .doc(JSON.parse(localStorage.getItem("userId")))
+        .get();
+      setData(queryRef?.data());
+    }
+
+
+    getData();
+
+  }, [])
+
+  console.log(datas)
+
 
   // SIDEBAR
   return (
@@ -48,7 +72,7 @@ function Sidebar(props) {
           borderRadius={sidebarRadius}
         >
           <SidebarContent routes={routes}
-        logoText={"DASHBOARD"}
+        logoText={datas?.company}
         display="none"
         sidebarVariant={sidebarVariant}
         />

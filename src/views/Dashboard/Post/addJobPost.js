@@ -262,7 +262,7 @@ function AddJobPost() {
               fontSize='sm'
               ms='4px'
               borderRadius='15px'
-              placeholder='Enter Job Description'
+              placeholder='Enter Education + Experience'
               mb='24px'
               size='lg'
               value={educationExperience}
@@ -278,7 +278,7 @@ function AddJobPost() {
               fontSize='sm'
               ms='4px'
               borderRadius='15px'
-              placeholder='Enter Job Description'
+              placeholder='Enter Required Knowledge, Skills, and Abilities'
               mb='24px'
               size='lg'
               value={otherDetails}

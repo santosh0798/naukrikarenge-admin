@@ -10,8 +10,8 @@ import {
   Input,
   Link,
   Switch,
-  Text,
-  useColorModeValue,
+  Text, Textarea,
+  useColorModeValue
 } from "@chakra-ui/react";
 // Assets
 import BgSignUp from "assets/img/BgSignUp.png";
@@ -190,6 +190,32 @@ function SignUp() {
                 setCompany(e.target.value);
               }}
             />
+
+            <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
+              Company logo
+            </FormLabel>
+            <Input
+              fontSize='sm'
+              ms='4px'
+              borderRadius='15px'
+              type='file'
+              placeholder='Your mobile number'
+              mb='24px'
+              size='lg'
+              onChange={(e) => {
+                firestorage.ref(`/company/${e.target?.files[0].name}`)
+                  .put(e.target?.files[0])
+                  .then(({ ref }) => {
+                    ref.getDownloadURL().then((url) => {
+                      setImage(url);
+                      toast.success("Pic uploaded");
+                      console.log(url)
+
+                    });
+                  });
+              }}
+            />
+
             <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
               Person Name
             </FormLabel>
@@ -288,14 +314,14 @@ function SignUp() {
               }}
             />
             <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
-              Description
+              About Company
             </FormLabel>
-            <Input
+            <Textarea
               fontSize='sm'
               ms='4px'
               borderRadius='15px'
               type='text'
-              placeholder='Your description'
+              placeholder='About Company'
               mb='24px'
               size='lg'
               aria-multiline
@@ -305,30 +331,6 @@ function SignUp() {
               }}
             />
 
-            <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
-              Company logo
-            </FormLabel>
-            <Input
-              fontSize='sm'
-              ms='4px'
-              borderRadius='15px'
-              type='file'
-              placeholder='Your mobile number'
-              mb='24px'
-              size='lg'
-              onChange={(e) => {
-                firestorage.ref(`/company/${e.target?.files[0].name}`)
-                  .put(e.target?.files[0])
-                  .then(({ ref }) => {
-                    ref.getDownloadURL().then((url) => {
-                      setImage(url);
-                      toast.success("Pic uploaded");
-                      console.log(url)
-
-                    });
-                  });
-              }}
-            />
 
             {values.editable == "true" ?
               <Button
